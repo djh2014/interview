@@ -48,6 +48,8 @@
 	<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 	<script type="text/javascript" src="js/moment.min.js"></script>
 	<script type="text/javascript" src="js/parse-1.2.7.min.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/application.js"></script>
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
@@ -65,12 +67,13 @@
 
 	  //// !!!!!! Instructions 
 
-      //TODO(danny): you can write the instructions, and the will apper by the order:
+      //TODO(danny): you can write the instructions, and they will apper by the order:
       // Guti will make sure to replace Dany and Google with variables later.
-      var interviewType = "finance";
+      var interviewType = getParameterByName("type") || "finance";
+      var firstName = getParameterByName("fname") || "Danny";
       // This instructions are common to all the interviews:
       var commonInstructions = [
-      	"Hi Danny, at your free time you can start the interview.",
+      	"Hi "+firstName+", at your free time you can start the interview.",
       	"Cool we are making progress :)"
       ]
       // Those instructions are depend on the interview type, e.g accounting.
