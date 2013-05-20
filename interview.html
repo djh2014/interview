@@ -87,6 +87,8 @@
         "How many windows in downtown Seattle?",
         "You have 2 pieces of wood and a box of matches, one of the pieces of wood burns in 30 seconds the other burns in 60 seconds.  How do you get the total amount of wood burning to be exactly 45 seconds"
       ]
+      var finalInstructions = ["Done! Now, Just click the red button, and then click save."];
+
       // Those instructions are depend on the interview type, e.g accounting.
       var specialInsructions = {
       	"accounting": commonInstructions.concat(
@@ -100,7 +102,7 @@
           "Describe a time when you helped to reduce costs at a previous accountant job",
           "How do you ensure that you do not forget details and ensure accuracy when you prepare monthly journal entries, record transactions, etc.?",
           "Describe a time when you had to explain a complex accounting issue to someone with without an accounting background. How did you help your audience understand the situation?"
-      		),
+      		).concat(finalInstructions),
       	"finance": commonInstructions.concat(
       	  "What makes a good analyst?",
           "What is a discounted cash flow?",
@@ -110,7 +112,7 @@
           "Tell me about a time when you created long-range plans at a previous employer.",
           "What diagrams and/or other materials do you use to capture and describe customer needs and convey technical information?",
           "Explain the steps you must take to create use cases when working with specific document requirements"
-      		),
+      		).concat(finalInstructions),
       	"customer-service": commonInstructions.concat(
           "What has been your greatest accomplishment?",
           "What would you do if your replacement doesn't show up?",
@@ -122,7 +124,7 @@
           "What is most important - a good product or friendly, fast service?",
           "Potato chips are on sale at half price. They sell for $1.19. How much is 50% off?",
           "Define really great support. What experiences have you had personally that are great examples?"
-          ),
+          ).concat(finalInstructions),
         "fitness": commonInstructions.concat(
           "Why should we hire you as Fitness instructor?",
           "What are your career goals for Fitness instructor?",
@@ -134,14 +136,14 @@
           "Provide an experience in which you instructed a participant on maintaining exertion levels to maximize the benefits of exercise routines.",
           "Tell me about a routine which you planned. What factors did you consider when planning the routine?",
           "Describe an effective method you have used to accommodate different fitness levels during classes."
-          ),
+          ).concat(finalInstructions),
         "dev": commonInstructions.concat(
           "Tell me about a project you worked on and are proud of",
           "What kind of technology would you like to work out",
           "What were the technichal challanges and how did you solve them",
           "Pick a sorting method and describe how it works",
           "How would you describe to a 10 year old what a database is?"
-           )
+           ).concat(finalInstructions)
       }
       var instructions = specialInsructions[interviewType];
 
@@ -167,8 +169,10 @@
 				instruction_counter = instruction_counter + 1;
 				show_instruction();
 				if (instruction_counter == instructions.length-1) {
+					recorder.setStyle({showRecordButton:false, showRecordStopButton:true,
+					showSaveButton: true, showControlBar:true});	
 					$("#instruction-next").hide();
-					$("#finish-button").show();       		
+					//$("#finish-button").show();       		
 				}
 			}
       	});
@@ -209,7 +213,7 @@
 				$("#instruction-next").click();	
 			});
 
-
+			// TODO(guti): not working:
 			// recorder.setStyle({showRecordButton:false, showRecordStopButton:false,
 			//  showSaveButton: true, showControlBar:false});	
 			//recorder.setStyle({showSaveButton: false});	
@@ -217,6 +221,8 @@
 		function finishVideo() {
 			// recorder.stopRecording();
 			// recorder.saveArchive();
+			recorder.setStyle({showRecordButton:false, showRecordStopButton:true,
+			showSaveButton: true, showControlBar:true});	
 		}
 
 		// !!!!!!! recorder event handlers:
@@ -224,6 +230,10 @@
 		function recStartedHandler(event) {
 			$("#instruction-next").show(); 
 			$("#instruction-next").click();	
+			recorder.setStyle({showRecordButton:false, showRecordStopButton:false,
+			showSaveButton: true, showControlBar:false});	
+			//recorder.setStyle({showSaveButton: false});	
+
 			recImgData = recorder.getImgData();
 		}
 		
