@@ -17,6 +17,10 @@ handlers:
   static_files: interview.html
   upload: interview.html
 
+- url: /admin
+  static_files: admin.html
+  upload: admin.html
+
 - url: /about
   static_files: about.html
   upload: about.html

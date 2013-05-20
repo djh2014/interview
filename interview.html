@@ -63,7 +63,7 @@
 	  var Video = Parse.Object.extend("Video");
 
 	  var API_KEY = "21551012"; 
-	  var TOKEN = "T1==cGFydG5lcl9pZD0yMTU1MTAxMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz1hYzUwYzlhZjY0NWUwYTMzNWY2OTNmOGQ5Njk4M2Q5MGM4NmU5Yjc2OnJvbGU9bW9kZXJhdG9yJnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzNjg5MTg2MjQmbm9uY2U9MC41MzEzNjgzMDU0MjY2NDU5JmV4cGlyZV90aW1lPTEzNjkwMDUwMjMmY29ubmVjdGlvbl9kYXRhPQ=="; 
+	  var TOKEN = "T1==cGFydG5lcl9pZD0yMTU1MTAxMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz00ODQwNzU2Mzg0OWNmZTEzN2I4MjNlMTY0ZmFmMjVmMjQzMjBiNjRkOnJvbGU9bW9kZXJhdG9yJnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzNjkwMTI5NTImbm9uY2U9MC4wMTE0MDEzMTg1NTYzMDQ0NCZleHBpcmVfdGltZT0xMzcxNjA0OTU0JmNvbm5lY3Rpb25fZGF0YT0="; 
 
 	  //// !!!!!! Instructions 
 
@@ -134,13 +134,6 @@
 			recorder.addEventListener('recordingStarted', recStartedHandler);
 			recorder.addEventListener('archiveSaved', archiveSavedHandler);
 		}
-
-		function getImg(imgData) {
-			var img = document.createElement('img');
-			img.setAttribute('src', 'data:image/png;base64,' + imgData);
-			return img;
-		}
-
 		// !!!!!!! recorder event handlers:
 
 		function recStartedHandler(event) {
@@ -152,8 +145,11 @@
 			debugger;
 			var video = new Video();
 	 		  video.save({
-	 		  	"archive_id": event.archives[0].archiveId,
-	 		  	"recImg":  recImgData
+	 		  	// TODO(guti): parse have a problem with the size:
+	 		  	// "recImg":  recImgData,
+	 		  	"archiveID": event.archives[0].archiveId,
+	 		  	"interviewType": interviewType,
+	 		  	"firstName": firstName 
 	 		    },{
 	 		  	success: function(message) {
 	 		  		window.alert("thanks, we will get back to you in the next few days :)");

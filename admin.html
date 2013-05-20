@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- <link href="css/bootstrap-responsive.css" rel="stylesheet"/> -->
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        margin: 60px 0;
+        text-align: center;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+    </style>
+	<script src='https://swww.tokbox.com/v1.1/js/TB.min.js'></script>
+	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="js/moment.min.js"></script>
+	<script type="text/javascript" src="js/parse-1.2.7.min.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/application.js"></script>
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
+	<script type="text/javascript">
+	  // !!!!!!!!! Initialization
+
+    Parse.initialize("8mr6ntqrhNI78ELacWimO8Wf3rclZBu80NNxdTEg", "YPFHj8ZXLKifS3sGVRsAI1c9bP3ka3tK2x7rp9go");
+	  var Video = Parse.Object.extend("Video");
+
+	  var API_KEY = "21551012"; 
+	  var TOKEN = "T1==cGFydG5lcl9pZD0yMTU1MTAxMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz00ODQwNzU2Mzg0OWNmZTEzN2I4MjNlMTY0ZmFmMjVmMjQzMjBiNjRkOnJvbGU9bW9kZXJhdG9yJnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzNjkwMTI5NTImbm9uY2U9MC4wMTE0MDEzMTg1NTYzMDQ0NCZleHBpcmVfdGltZT0xMzcxNjA0OTU0JmNvbm5lY3Rpb25fZGF0YT0="; 
+
+    // !!!!!!!!!! Record manager
+
+	  var recorderManager;
+    var player;
+
+		function init() {
+			recorderManager = TB.initRecorderManager(API_KEY);
+      var query = new Parse.Query(Video);
+      query.find({
+        success: function(videos) {
+          videos.forEach(function(video) {
+            video = video.toJSON();
+            presentVideoImg(video);
+          });
+        },
+        error: function(error) {
+          window.alert(error); 
+        }
+      });
+      // Get all the videos, and show them
+		}
+
+		function getImg(imgData, firstName, interviewType) {
+      if(imgData != null) {
+  			var img = document.createElement('img');
+  			img.setAttribute('src', 'data:image/png;base64,' + imgData);
+  			return img;
+      } else {
+        var p = document.createElement('button');
+        debugger;
+        p.innerText = "Video" +" "+ firstName +" "+ interviewType;
+        return p;
+      }
+		}
+
+		// !!!!!!! recorder event handlers:
+    function presentVideoImg(video) {
+      document.getElementById('archiveList').style.display = 'block';
+      var aLink = document.createElement('a');
+      aLink.setAttribute('href',
+                "javascript:loadArchiveInPlayer(\'" + video.archiveID + "\')");
+      var recImg = getImg(video.recImg, video.firstName, video.interviewType);
+      recImg.setAttribute('style', 'width:80; height:60; margin-right:2px');
+      aLink.appendChild(recImg);
+      document.getElementById('archiveList').appendChild(aLink);
+    }
+
+    function loadArchiveInPlayer(archiveId) {
+      if (!player) {
+        playerDiv = document.createElement('div');
+        playerDiv.setAttribute('id', 'playerElement');
+        document.getElementById('playerContainer').appendChild(playerDiv);
+        player = recorderManager.displayPlayer(archiveId, TOKEN, playerDiv.id);
+        document.getElementById('playerContainer').style.display = 'block';
+      } else {
+        player.loadArchive(archiveId);
+      }
+    }
+
+		function recStartedHandler(event) {
+			recImgData = recorder.getImgData();
+		}
+
+	</script>
+  </head>
+  <body onload="init()">
+    <div class="container-narrow">
+      <!-- Menu -->
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="/">Home</a></li>
+          <li class="active"><a href="interview">Interview</a></li>
+          <li><a href="about">About</a></li>
+        </ul>
+        <h3 class="muted">InterviewYee!</h3>
+      </div>
+      <hr>
+	  <!-- Content -->
+    <div class="row-fluid">
+	  	<div class="span6">
+       <div id="playerContainer" style="float:left; height:340px; width 320px; display:none">
+          <p>Stand-alone player:</p>
+        </div>
+      </div>
+      <div class="span6">
+        <div id="archiveList" style="height:100px; display:none">
+          <p>Recordings (click to play):</p>
+        </div>
+      </div>     
+    </div>
+      <hr>
+      <div class="footer">
+        <p>&copy; InterviewYee! 2013</p>
+      </div>
+    </div> <!-- /container -->
+</html>
