@@ -1,0 +1,134 @@
+<!-- This page could be deleted soon -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet"/>
+
+	<script src='https://swww.tokbox.com/v1.1/js/TB.min.js'></script>
+	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="js/moment.min.js"></script>
+	<script type="text/javascript" src="js/parse-1.2.7.min.js"></script>
+
+
+</head>
+<body>
+	<div id="myPublisherDiv"></div>
+        <script type="text/javascript">
+          // Initialize API key, session, and token...
+          // Think of a session as a room, and a token as the key to get in to the room
+          // Sessions and tokens are generated on your server and passed down to the client
+          var apiKey = "21551012";
+          var sessionId = "1_MX4yMTU1MTAxMn4xMjcuMC4wLjF-U2F0IE1heSAxOCAxNTo0NDoyNSBQRFQgMjAxM34wLjk5OTY5OTV-";
+          var token = "T1==cGFydG5lcl9pZD0yMTU1MTAxMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz05NTkyZWU3OGM1ZDQxODFiYTRlYjQ3NzIyOTAxMTViNDczYjUwMDFhOnJvbGU9cHVibGlzaGVyJnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzNjg5MTcwNjQmbm9uY2U9MC41MTYzODI1MzI2NzUzMDQmZXhwaXJlX3RpbWU9MTM2OTAwMzQ2NCZjb25uZWN0aW9uX2RhdGE9";
+
+          var moderator_token = "T1==cGFydG5lcl9pZD0yMTU1MTAxMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz1hYzUwYzlhZjY0NWUwYTMzNWY2OTNmOGQ5Njk4M2Q5MGM4NmU5Yjc2OnJvbGU9bW9kZXJhdG9yJnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzNjg5MTg2MjQmbm9uY2U9MC41MzEzNjgzMDU0MjY2NDU5JmV4cGlyZV90aW1lPTEzNjkwMDUwMjMmY29ubmVjdGlvbl9kYXRhPQ==";
+
+
+      	var recorderManager;
+		var recorder;
+		var player;
+		var recImgData;
+
+		var API_KEY = apiKey; // Replace with your API key. See https://dashboard.tokbox.com/projects
+		var TOKEN = moderator_token; // Replace with a generated token that has the moderator role. See https://dashboard.tokbox.com/projects
+		
+		var VIDEO_HEIGHT = 240;
+		var VIDEO_WIDTH = 320;
+		
+		// Un-comment either of the following to set automatic logging and exception handling.
+		// See the exceptionHandler() method below.
+		// TB.setLogLevel(TB.DEBUG);
+		// TB.addEventListener('exception', exceptionHandler);
+
+		function init() {
+			recorderManager = TB.initRecorderManager(API_KEY);
+			createRecorder();
+		}
+
+		function createRecorder() {
+			var recDiv = document.createElement('div');
+			recDiv.setAttribute('id', 'recorderElement');
+			document.getElementById('recorderContainer').appendChild(recDiv);
+			recorder = recorderManager.displayRecorder(TOKEN, recDiv.id);
+			recorder.addEventListener('recordingStarted', recStartedHandler);
+			recorder.addEventListener('archiveSaved', archiveSavedHandler);
+		}
+
+		function getImg(imgData) {
+			var img = document.createElement('img');
+			img.setAttribute('src', 'data:image/png;base64,' + imgData);
+			return img;
+		}
+
+		function loadArchiveInPlayer(archiveId) {
+			if (!player) {
+				playerDiv = document.createElement('div');
+				playerDiv.setAttribute('id', 'playerElement');
+				document.getElementById('playerContainer').appendChild(playerDiv);
+				player = recorderManager.displayPlayer(archiveId, TOKEN, playerDiv.id);
+				document.getElementById('playerContainer').style.display = 'block';
+			} else {
+				player.loadArchive(archiveId);
+			}
+		}
+
+		//--------------------------------------
+		//  OPENTOK EVENT HANDLERS
+		//--------------------------------------
+
+		function recStartedHandler(event) {
+			recImgData = recorder.getImgData();
+		}
+		
+		function archiveSavedHandler(event) {
+			document.getElementById('archiveList').style.display = 'block';
+			var aLink = document.createElement('a');
+			aLink.setAttribute('href',
+								"javascript:loadArchiveInPlayer(\'" + event.archives[0].archiveId + "\')");
+			var recImg = getImg(recImgData);
+			recImg.setAttribute('style', 'width:80; height:60; margin-right:2px');
+			aLink.appendChild(recImg);
+			document.getElementById('archiveList').appendChild(aLink);
+		}
+
+		function archiveLoadedHandler(event) {
+			archive = event.archives[0];
+			archive.startPlayback();
+		}
+
+		/*
+		If you un-comment the call to TB.addEventListener('exception', exceptionHandler) above, OpenTok calls the
+		exceptionHandler() method when exception events occur. You can modify this method to further process exception events.
+		If you un-comment the call to TB.setLogLevel(), above, OpenTok automatically displays exception event messages.
+		*/
+
+		function exceptionHandler(event) {
+			alert('Exception: ' + event.code + '::' + event.message);
+		}
+		$(function() {
+			$("#load_old").click(function(event) {
+		    	loadArchiveInPlayer('764c1c3a-3ee9-4fc9-a9aa-910facedd659');
+			});
+		});
+		
+	</script>
+	</head>
+	<body onload="init()">
+		<div id="recorderContainer" style="float:left; height:340px; width 329px; margin-right:8px;">
+			<p>Welcome to interviewyee:</p>
+		</div>
+		<div id="playerContainer" style="float:left; height:340px; width 320px; display:none">
+			<p>Stand-alone player:</p>
+		</div>
+		<div style="clear:both; margin"></div>
+		<div id="archiveList" style="height:100px; display:none">
+			<p>Recordings (click to play):</p>
+		</div>
+		<button id="load_old" class="btn">Load</button>
+	</body>
+</html>
