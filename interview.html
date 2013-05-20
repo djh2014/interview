@@ -168,6 +168,8 @@
       		if (instruction_counter < instructions.length-1) {
 				instruction_counter = instruction_counter + 1;
 				show_instruction();
+				$("#instruction-next").hide();
+				setTimeout(function(){$("#instruction-next").show()}, 10*1000);
 				if (instruction_counter == instructions.length-1) {
 					recorder.setStyle({showRecordButton:false, showRecordStopButton:true,
 					showSaveButton: true, showControlBar:true});	
