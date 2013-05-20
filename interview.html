@@ -73,19 +73,75 @@
       var firstName = getParameterByName("fname") || "Danny";
       // This instructions are common to all the interviews:
       var commonInstructions = [
-      	"Hi "+firstName+", at your free time you can start the interview.",
-      	"Cool we are making progress :)"
+      	 "Hi "+firstName+", Please press the allow button on the video screen to your right",
+      	 "Great, once you set, press the red button to start the interview.",
+        "Awesome! now we can start! only once you finish answering a question, press the next button.",
+        "In few sentences, please tell me a little bit about yourself.",
+        "What are your interests?",
+        "Why should we hire you?",
+        "Why are you interested in this position?",
+        "What do you love most about what you do?",
+        "Who was your best boss? And why?",
+        "Describe a time when you had to work exceptionally hard to provide great service to a customer or client. What did you do and what was the outcome?",
+        "Give me an example of when you thought outside of the box. How did it help your employer?",
+        "How many windows in downtown Seattle?",
+        "You have 2 pieces of wood and a box of matches, one of the pieces of wood burns in 30 seconds the other burns in 60 seconds.  How do you get the total amount of wood burning to be exactly 45 seconds"
       ]
       // Those instructions are depend on the interview type, e.g accounting.
       var specialInsructions = {
       	"accounting": commonInstructions.concat(
-      		"So I heard you like numbers?",
-      		"why the hell you want to work in accounting?"
+      		   "What do you consider to be the biggest challenge facing the accounting profession today?",
+          "Which accounting applications are you familiar with?",
+          "Describe the advantages and disadvantages of different accounting packages you have used in your most recent accountant jobs.",
+          "What would you consider to be your accounting area of expertise?",
+          "What kinds of accounting reports have you prepared?",
+          "How do you stay up-to-speed on new accounting regulations?",
+          "Describe any accounting process that you have developed or sought to improve",
+          "Describe a time when you helped to reduce costs at a previous accountant job",
+          "How do you ensure that you do not forget details and ensure accuracy when you prepare monthly journal entries, record transactions, etc.?",
+          "Describe a time when you had to explain a complex accounting issue to someone with without an accounting background. How did you help your audience understand the situation?"
       		),
       	"finance": commonInstructions.concat(
-      		"So, Do you like money?",
-      		"Money, money, money."
-      		)
+      	  "What makes a good analyst?",
+          "What is a discounted cash flow?",
+          "What does a CFA do?",
+          "What is the WACC equation?",
+          "How is the 3 financial statements related” Describe three of the different types of diagrams that business analysts most often use?",
+          "Tell me about a time when you created long-range plans at a previous employer.",
+          "What diagrams and/or other materials do you use to capture and describe customer needs and convey technical information?",
+          "Explain the steps you must take to create use cases when working with specific document requirements"
+      		),
+      	"customer-service": commonInstructions.concat(
+          "What has been your greatest accomplishment?",
+          "What would you do if your replacement doesn't show up?",
+          "If hired, how long do you plan on working here?",
+          "A customer complains that the coffee tastes terrible, what would you do?",
+          "A co-worker is rude to customers, what would you do?",
+          "The credit card machine is broken. What do you say to the customers?",
+          "The customer is saying you’re taking too long to solve the issue, what do you do?",
+          "What is most important - a good product or friendly, fast service?",
+          "Potato chips are on sale at half price. They sell for $1.19. How much is 50% off?",
+          "Define really great support. What experiences have you had personally that are great examples?"
+          ),
+        "fitness": commonInstructions.concat(
+          "Why should we hire you as Fitness instructor?",
+          "What are your career goals for Fitness instructor?",
+          "What do you think are the most important skills in succeeding in sales?",
+          "Sell me on why I should take a lesson from you?",
+          "How many years of experience do you have for Fitness instructor position?",
+          "Share an experience you had in dealing with a difficult person and how you handled the situation.",
+          "Share an effective method you have used to ensure that client  perform skills effectively.",
+          "Provide an experience in which you instructed a participant on maintaining exertion levels to maximize the benefits of exercise routines.",
+          "Tell me about a routine which you planned. What factors did you consider when planning the routine?",
+          "Describe an effective method you have used to accommodate different fitness levels during classes."
+          ),
+        "dev": commonInstructions.concat(
+          "Tell me about a project you worked on and are proud of",
+          "What kind of technology would you like to work out",
+          "What were the technichal challanges and how did you solve them",
+          "Pick a sorting method and describe how it works",
+          "How would you describe to a 10 year old what a database is?"
+           )
       }
       var instructions = specialInsructions[interviewType];
 
@@ -149,10 +205,10 @@
 			// });
 			recorder.addEventListener('accessAllowed', function(event) {
 				//recorder.startRecording();
-				$("#instruction-next").show(); 
+				//$("#instruction-next").show(); 
 				$("#instruction-next").click();	
 			});
-			
+
 
 			// recorder.setStyle({showRecordButton:false, showRecordStopButton:false,
 			//  showSaveButton: true, showControlBar:false});	
@@ -166,6 +222,8 @@
 		// !!!!!!! recorder event handlers:
 
 		function recStartedHandler(event) {
+			$("#instruction-next").show(); 
+			$("#instruction-next").click();	
 			recImgData = recorder.getImgData();
 		}
 		
