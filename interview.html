@@ -98,13 +98,22 @@
       		"src", "http://tts-api.com/tts.mp3?q=" + instructions[instruction_counter]);
       	audio.load();
       	audio.play();
+      	$("#instruction-audio").hide();
       }
       $(function() {
 		show_instruction();
+		$("#instruction-next").hide();
+		$("#instruction-prev").hide();
+		$("#finish-button").hide();
+
       	$("#instruction-next").click(function() {
       		if (instruction_counter < instructions.length-1) {
 				instruction_counter = instruction_counter + 1;
 				show_instruction();
+				if (instruction_counter == instructions.length-1) {
+					$("#instruction-next").hide();
+					$("#finish-button").show();       		
+				}
 			}
       	});
       	$("#instruction-prev").click(function() {
@@ -113,6 +122,7 @@
 				show_instruction();
 			}
       	});
+      	$("#finish-button").click(finishVideo);
       });
 
       // !!!!!!!!!! Record manager
@@ -133,7 +143,26 @@
 			recorder = recorderManager.displayRecorder(TOKEN, recDiv.id);
 			recorder.addEventListener('recordingStarted', recStartedHandler);
 			recorder.addEventListener('archiveSaved', archiveSavedHandler);
+			// recorder.addEventListener('recordingStopped', function(event) {
+			//   // maybe add some delay.// or just give instructions.
+			//   //recorder.saveArchive();			  
+			// });
+			recorder.addEventListener('accessAllowed', function(event) {
+				//recorder.startRecording();
+				$("#instruction-next").show(); 
+				$("#instruction-next").click();	
+			});
+			
+
+			// recorder.setStyle({showRecordButton:false, showRecordStopButton:false,
+			//  showSaveButton: true, showControlBar:false});	
+			//recorder.setStyle({showSaveButton: false});	
 		}
+		function finishVideo() {
+			// recorder.stopRecording();
+			// recorder.saveArchive();
+		}
+
 		// !!!!!!! recorder event handlers:
 
 		function recStartedHandler(event) {
@@ -181,6 +210,7 @@
        		<h3 id="instruction-text"></h3>
        		<button class="btn" id="instruction-prev">Prev</button>
        		<button class="btn" id="instruction-next">NEXT</button>
+       		<button class="btn" id="finish-button">Finish</button>
          </div>
 
          <div class="span6">
